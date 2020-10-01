@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/ludwigdn/secret-santa/workflows/.NET%20Core/badge.svg)](https://github.com/ludwigdn/secret-santa/actions)
+
 # Secret Santa
 
 Oganize a Secret Santa easily among your friends or family. Just fill a file with each person's name and email, and you're good to go (Please leave {0} in the body where to insert the receiver of the present):
