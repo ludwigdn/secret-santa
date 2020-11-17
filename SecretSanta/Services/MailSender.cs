@@ -54,8 +54,8 @@ namespace SecretSanta
             #endregion Values
 
             var msg = new MimeMessage();
-            msg.To.AddRange(new List<MailboxAddress> { new MailboxAddress(TO) });
-            msg.From.AddRange(new List<MailboxAddress> { new MailboxAddress(FROM) });
+            msg.To.AddRange(new List<MailboxAddress> { MailboxAddress.Parse(TO) });
+            msg.From.AddRange(new List<MailboxAddress> { MailboxAddress.Parse(FROM) });
             msg.Subject = SUBJECT;
             msg.Body = new TextPart(TextFormat.Html)
             {
