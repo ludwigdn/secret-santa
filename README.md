@@ -44,11 +44,11 @@ The unzip it anywhere you want on yor computer.
 
 ### Open a command prompt
 
-Open a command prompt and type "cd " followed by the path of the project you unziped before (c://path/to/project).
+Open a command prompt and type "cd " followed by the path of the project you unziped before (c://PATH/TO/secret-santa-main).
 
 Example: 
 ```
-"cd c://users/ludwig/desktop/secret-santa"
+"cd c://users/ludwig/desktop/secret-santa-main"
 ```
 
 ### Do the magic
