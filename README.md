@@ -2,7 +2,15 @@
 
 # Secret Santa
 
-Oganize a Secret Santa easily among your friends or family. Just fill a file with each person's name and email, and you're good to go (Please leave {0} in the body where to insert the receiver of the present):
+Oganize a Secret Santa easily among your friends or family.
+
+### Install .NET 5
+
+Install on your dedicated platform: https://dotnet.microsoft.com/download
+
+### Fill out the configuration file
+
+Just fill a file with each person's name and email, and you're good to go (Please leave {0} in the body where to insert the receiver of the present):
 
 ```
 {
@@ -26,8 +34,34 @@ Oganize a Secret Santa easily among your friends or family. Just fill a file wit
 }
 ```
 
-Then, a simple command will do the magic:
+Then save the file as "secret-santa-config.json" anywhere you want on your computer.
+
+### Dowload the project
+
+Dowload it here: https://github.com/ludwigdn/secret-santa/archive/main.zip
+
+The unzip it anywhere you want on yor computer.
+
+### Open a command prompt
+
+Open a command prompt and type "cd " followed by the path of the project you unziped before (c://path/to/project).
+
+Example: 
+```
+"cd c://users/ludwig/desktop/secret-santa"
+```
+
+### Do the magic
+
+Then, a simple command will execute the process.
 
 ```
-dotnet run -- -c "c://path/to/my-config-file.json"
+dotnet run -- -c "c://PATH/TO/MY/secret-santa-config.json"
 ```
+
+Example:
+```
+dotnet run -- -c "c://users/ludwig/desktop/secret-santa-config.json"
+```
+
+Et voilà !
