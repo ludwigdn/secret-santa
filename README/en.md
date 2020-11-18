@@ -20,12 +20,12 @@ The unzip it anywhere you want on yor computer.
 
 Download the configuration file below, according to you mail provider, and replace each time you are asked to:
 
-- [Gmail](https://github.com/ludwigdn/secret-santa/blob/main/README/configs/gmail/config_en.json)
-- [Outlook](https://github.com/ludwigdn/secret-santa/blob/main/README/configs/outlook/config_en.json)
-- [Laposte.net](https://github.com/ludwigdn/secret-santa/blob/main/README/configs/laposte/config_en.json)
-- [Yahoo](https://github.com/ludwigdn/secret-santa/blob/main/README/configs/yahoo/config_en.json)
-- [Zoho](https://github.com/ludwigdn/secret-santa/blob/main/README/configs/zoho/config_en.json)
-- [AOL](https://github.com/ludwigdn/secret-santa/blob/main/README/configs/aol/config_en.json)
+- [Gmail](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/gmail/config_en.json)
+- [Outlook](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/outlook/config_en.json)
+- [Laposte.net](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/laposte/config_en.json)
+- [Yahoo](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/yahoo/config_en.json)
+- [Zoho](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/zoho/config_en.json)
+- [AOL](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/aol/config_en.json)
 
 Careful, in "mailBody", if you wish to change the message, please leave the "{0}" because it will be au tomatically to insert the receiver of the present. So type your message accordingly (For instance, "Hi, you've been chosen to give a present to {0}").
 
