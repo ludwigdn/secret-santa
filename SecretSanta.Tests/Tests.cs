@@ -64,5 +64,28 @@ namespace SecretSanta.Tests
             // After 100000 loops, it'd be pretty odd if the first participant of each loop is always the same...
             Assert.IsTrue(isWellRandomized);
         }
+
+        [Test, Parallelizable]
+        [TestCase(MailProvider.ALICE, "smtp.alice.fr", "587")]
+        [TestCase(MailProvider.AOL, "smtp.aol.com", "465")]
+        [TestCase(MailProvider.BOUYGUES, "smtp.bbox.fr", "587")]
+        [TestCase(MailProvider.BBOX, "smtp.bbox.fr", "587")]
+        [TestCase(MailProvider.FREE, "smtp.free.fr", "465")]
+        [TestCase(MailProvider.GMAIL, "smtp.gmail.com", "465")]
+        [TestCase(MailProvider.HOTMAIL, "smtp.live.com", "587")]
+        [TestCase(MailProvider.LAPOSTE, "smtp.laposte.net", "465")]
+        [TestCase(MailProvider.NUMERICABLE, "smtps.numericable.fr", "587")]
+        [TestCase(MailProvider.ORANGE, "smtp.orange.fr", "465")]
+        [TestCase(MailProvider.OUTLOOK, "SMTP.office365.com", "587")]
+        [TestCase(MailProvider.SFR, "smtp.sfr.fr", "465")]
+        [TestCase(MailProvider.NEUF, "smtp.sfr.fr", "465")]
+        [TestCase(MailProvider.YAHOO, "smtp.mail.yahoo.com", "465")]
+        [TestCase(MailProvider.ZOHO, "smtp.zoho.com", "465")]
+        public void MailProviderSettingsTest(MailProvider provider, string host, string port)
+        {
+            var settings = MailProviderSettings.Get(provider);
+            Assert.AreEqual(host, settings.SMTP_HOST);
+            Assert.AreEqual(port, settings.SMTP_PORT);
+        }
     }
 }
