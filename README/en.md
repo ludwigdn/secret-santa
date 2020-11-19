@@ -20,12 +20,19 @@ The unzip it anywhere you want on yor computer.
 
 Download the configuration file below, according to you mail provider, and replace each time you are asked to:
 
+- [Alice](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/alice/config_en.json)
+- [AOL](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/aol/config_en.json)
+- [Bouygues / Bbox](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/bouygues/config_en.json)
+- [Free](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/free/config_en.json)
 - [Gmail](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/gmail/config_en.json)
-- [Outlook](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/outlook/config_en.json)
+- [Hotmail](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/hotmail/config_en.json)
 - [Laposte.net](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/laposte/config_en.json)
+- [Numericable](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/numericable/config_en.json)
+- [Orange](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/orange/config_en.json)
+- [Outlook](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/outlook/config_en.json)
+- [Sfr](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/sfr/config_en.json)
 - [Yahoo](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/yahoo/config_en.json)
 - [Zoho](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/zoho/config_en.json)
-- [AOL](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/aol/config_en.json)
 
 Careful, in "mailBody", if you wish to change the message, please leave the "{0}" because it will be au tomatically to insert the receiver of the present. So type your message accordingly (For instance, "Hi, you've been chosen to give a present to {0}").
 
