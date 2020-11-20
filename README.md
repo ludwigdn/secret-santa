@@ -14,7 +14,7 @@
 Config file (json) :
 
 - Update the "lang" with either 'en' or 'fr'.
-- In case you wish to hange the "MailBody", please leave a "{0}" where the name of the receiver of the gift will appear.
+- In case you wish to change the "MailBody", please leave a "{0}" where the name of the receiver of the gift will appear.
 - Fields 'MailSubject', 'MailBodyTitle', or 'MailBody' can be left as they are, but you can put whatever you want.
 - Other fields must bu updated according to your configuration
 
