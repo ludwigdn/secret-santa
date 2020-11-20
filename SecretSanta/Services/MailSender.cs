@@ -52,7 +52,7 @@ namespace SecretSanta
                 try
                 {
                     await emailClient.SendAsync(msg);
-                    Debug.WriteLine($"{santa.Email} - Sent mail ");
+                    Console.WriteLine($" > {santa.Email}: ok! ");
                 }
                 catch (Exception ex)
                 {
