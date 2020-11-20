@@ -4,58 +4,14 @@
 
 Oganize a Secret Santa easily among your friends or family.
 
-PS: this README has been edited for the beginners in computer environment.
-
 ### Install .NET 5
 
 Install on your dedicated platform: https://dotnet.microsoft.com/download
 
 ### Dowload the project
 
-Dowload it here: https://github.com/ludwigdn/secret-santa/archive/main.zip
+Dowload it here, according to your dedicated platform: https://github.com/ludwigdn/secret-santa/releases
 
-The unzip it anywhere you want on yor computer.
+The unzip it anywhere you want on yor computer, open the folder, and click on **SecretSanta.exe** to start the program.
 
-### Fill out the configuration file
-
-Download the configuration file below, according to you mail provider, and replace each time you are asked to:
-
-- [Alice](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/alice/config_en.json)
-- [AOL](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/aol/config_en.json)
-- [Bouygues / Bbox](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/bouygues/config_en.json)
-- [Free](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/free/config_en.json)
-- [Gmail](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/gmail/config_en.json)
-- [Hotmail](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/hotmail/config_en.json)
-- [Laposte.net](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/laposte/config_en.json)
-- [Numericable](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/numericable/config_en.json)
-- [Orange](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/orange/config_en.json)
-- [Outlook](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/outlook/config_en.json)
-- [Sfr](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/sfr/config_en.json)
-- [Yahoo](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/yahoo/config_en.json)
-- [Zoho](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/zoho/config_en.json)
-
-Careful, in "mailBody", if you wish to change the message, please leave the "{0}" because it will be au tomatically to insert the receiver of the present. So type your message accordingly (For instance, "Hi, you've been chosen to give a present to {0}").
-
-### Command prompt
-
-Open a command prompt, according to your computer type, and type "cd " followed by the path of the project you unziped before (c://PATH/TO/secret-santa-main).
-
-Example: 
-```
-"cd c://users/ludwig/desktop/secret-santa-main"
-```
-
-### Do the magic
-
-Then, a simple command will execute the process.
-
-```
-dotnet run -- -c "c://PATH/TO/MY/secret-santa-config.json"
-```
-
-Example:
-```
-dotnet run -- -c "c://users/ludwig/desktop/secret-santa-config.json"
-```
-
-And voilà !
+Follow the questions and the email will be sent in less than five!

@@ -4,60 +4,14 @@
 
 Organisez facilement un secret santa avec vos amis ou votre famille.
 
-PS: Ce README a été rédigé à l'attention des néophytes de l'informatique.
-
 ### Installation de .NET 5
 
-Installez le sdk sur votre ordinateur selon son type: https://dotnet.microsoft.com/download
+Installez le sdk, selon votre ordinateur: https://dotnet.microsoft.com/download
 
 ### Téléchargez le projet
 
-A télécharger ici: https://github.com/ludwigdn/secret-santa/archive/main.zip
+A télécharger ici, selon votre ordinateur: https://github.com/ludwigdn/secret-santa/releases
 
-Ensuite, dézippez-le n'importe où sur votre ordinateur.
+Ensuite, dézippez-le n'importe où sur votre ordinateur, ouvrez le dossier, et cliquez sur **SecretSanta.exe** pour lancer le programme.
 
-### Fichier de configuration
-
-Téléchargez le fichier de configuration ci dessous, selon votre boite mail, et remplacez chaque indication l'indiquant :
-
-- [Alice](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/alice/config_fr.json)
-- [AOL](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/aol/config_fr.json)
-- [Bouygues / Bbox](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/bouygues/config_fr.json)
-- [Free](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/free/config_fr.json)
-- [Gmail](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/gmail/config_fr.json)
-- [Hotmail](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/hotmail/config_fr.json)
-- [Laposte.net](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/laposte/config_fr.json)
-- [Numericable](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/numericable/config_fr.json)
-- [Orange](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/orange/config_fr.json)
-- [Outlook](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/outlook/config_fr.json)
-- [Sfr](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/sfr/config_fr.json)
-- [Yahoo](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/yahoo/config_fr.json)
-- [Zoho](https://raw.githubusercontent.com/ludwigdn/secret-santa/main/README/configs/zoho/config_fr.json)
-
-Attention, dans "mailBody", si vous désirez changer le message, le "{0}" est à laisser car  il sera automatiquement remplacé par le nom du destinataire du cadeau. Saisissez donc votre message en conséquence (Par exemple "Salut, tu as été choisi pour faire un cadeau à {0}").
-
-### Fenêtre console
-
-Ouvrez ensuite une fenêtre console (Powershell, Terminal,... tout dépend de votre ordinateur), et tapez "cd " followed by the path of the project you unziped before (c://PATH/TO/secret-santa-main).
-
-Exemple: 
-```
-"cd c://users/ludwig/desktop/secret-santa-main"
-```
-
-Cela vous permettre d'aller dans ce dossier.
-
-### Do the magic
-
-Enfin, une simple commande exécutera le programme.
-
-```
-dotnet run -- -c "c://PATH/TO/MY/config.json"
-```
-
-Exemple:
-```
-dotnet run -- -c "c://users/ludwig/desktop/config.json"
-```
-
-Et voilà !
+Suivez les questions et vos email partiront en moins de cinq minutes !
