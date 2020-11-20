@@ -16,6 +16,12 @@ namespace SecretSanta
         public string SMTP_PORT { get; private set; }
         public string SMTP_HOST { get; private set; }
 
+        public MailProviderSettings(string host, string port)
+        {
+            SMTP_HOST = host;
+            SMTP_PORT = port;            
+        }
+        
         private MailProviderSettings() { }
 
         public static MailProviderSettings Get(MailProvider provider)
@@ -92,6 +98,7 @@ namespace SecretSanta
                     port = "465";
                     break;
 
+                case MailProvider.UNKOWN:
                 default:
                     return null;
             }
@@ -120,6 +127,7 @@ namespace SecretSanta
         SFR,
         NEUF,
         YAHOO,
-        ZOHO
+        ZOHO,
+        UNKOWN
     }
 }

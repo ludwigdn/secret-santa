@@ -33,7 +33,8 @@ namespace SecretSanta
         public string SmtpPort { get; set; }
 
         [DataMember]
-        public List<Participant> Participants { get; set; }
+        public List<Participant> Participants { get; set; } = new List<Participant>();
+        public Config() { }     
 
         public void Parse(string filePath)
         {
@@ -49,26 +50,38 @@ namespace SecretSanta
             Participants = config.Participants;
         }
 
+        public void Parse(Config config)
+        {
+            MailSubject = config.MailSubject;
+            MailBodyTitle = config.MailBodyTitle;
+            MailBody = config.MailBody;
+            SmtpEmail = config.SmtpEmail;
+            SmtpPassword = config.SmtpPassword;
+            SmtpHost = config.SmtpHost;
+            SmtpPort = config.SmtpPort;
+            Participants = config.Participants;
+        }  
+
         #region Singleton stuff
 
         private static Config instance = null;
         private static readonly object instanceLock = new object();
 
-        private Config()
-        {
-        }
 
         public static Config Instance
         {
             get
             {
-                lock (instanceLock)
+                if (instance == null)
                 {
-                    if (instance == null)
-                        instance = new Config();
-
-                    return instance;
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                            instance = new Config();                        
+                    }
                 }
+                
+                return instance;
             }
         }
 

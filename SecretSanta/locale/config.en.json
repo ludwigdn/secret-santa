@@ -1,0 +1,28 @@
+{
+    "Q" : {
+        "MailSubject" : "Please enter the subject of the mail that's going to be sent to everyone",
+        "Participants" : "Please now enter the number of secret santas (including you):",
+        "ParticipantName": "Santa #{0} - Name:",
+        "ParticipantEmail": "Santa #{0} - Email:",  
+        "UserProvider": "Please choose you email provider amongst the following list:",
+        "UserProviderIndex": "Please choose the corresponding number:",
+        "UserProviderUnown": "None of the above",
+        "UserProviderManual": "Your email provider was none of the above. You will now be able to enter manually the SMTP host and port of your email provider.",
+        "UserProviderManualSmtpHost": "Please enter the SMTP host:",
+        "UserProviderManualSmtpPort": "Please enter the SMTP port:",
+        "UserEmailAccountSetup": "You are now about to enter credentials for your email account that will be used to send an email to each of your santas. These credentials won't be sent to anyone or stored anywhere.",
+        "UserEmail" : "Please enter the email address of the account:",
+        "UserPassword" : "Please enter the password of this email account:"    
+    },
+
+    "Auto" : {
+        "BodyTitle" : "Secret Santas have been chosen!",
+        "Body": "You were chosen to give a present to <span style=\"font-weight: bold; color: yellow;\">{0}</span>.</br></br> Try to fit to what they like! If you have no clue, just ask around :-)</br></br><div>Happy Holidays to all, et keep the secret until the last minute !</div>",
+        "Thanks" : "Thanks for using this app. Season's greetings !",
+        "Thanks2" : "Press enter to stop..."
+    },
+
+    "Warning": {
+        "BadInteger": "Please enter a valid number."
+    }
+}
