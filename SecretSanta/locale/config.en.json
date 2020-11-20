@@ -1,7 +1,8 @@
 {
     "Q" : {
         "MailSubject" : "Please enter the subject of the mail that's going to be sent to everyone",
-        "Participants" : "Please now enter the number of secret santas (including you):",
+        "Participants" : "You will now enter the Santas (including yourself). Each Santa must have an email address and a dictinct name (even though some of these people share the same name, so they can properly be dintinguished).",
+        "ParticipantsCount" : "Please now enter the number of secret santas (you included):",
         "ParticipantName": "Santa #{0} - Name:",
         "ParticipantEmail": "Santa #{0} - Email:",  
         "UserProvider": "Please choose you email provider amongst the following list:",
@@ -23,6 +24,8 @@
     },
 
     "Warning": {
-        "BadInteger": "Please enter a valid number."
+        "BadInteger": "Please enter a valid number.",
+        "NameExists": "This name is already used for someone else. Try something else.",
+        "EmailExists": "This email is already used for someone else. Try something else."
     }
 }

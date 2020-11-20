@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
@@ -46,23 +47,48 @@ namespace SecretSanta
 
         private string GetLanguage()
         {
-            var answer = GetAnswerFrom("Programme en Français ? Software in English? (fr/en)");
-            return  answer == "fr" 
+            Console.WriteLine(); 
+            WriteSlow("Langue du programme / Software language");
+            Console.WriteLine(); 
+
+            Console.WriteLine($"   1. Français");
+            Console.WriteLine($"   2. English");
+
+            Console.WriteLine(); 
+            WriteSlow("Entrez le n° correspondant / Enter the corresponding number:");
+            Console.Write(" > ");
+
+            var lang = GetInteger(ReadLine(), max: 2, errorMessage: "Saisie invalide, veuillez réessayer. Invalid input, please try again.");
+            return lang == 1 
                 ? "fr" 
                 : "en";
         }
 
-        private IEnumerable<Participant> GetParticipants()
+        private List<Participant> GetParticipants()
         {
-            int participantsCount = GetInteger(_questions, GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_PARTICIPANTS)));
+            Console.WriteLine(); 
+            WriteSlow(_questions.Get(QuestionsServer.QUESTION_PARTICIPANTS)); 
+            Console.WriteLine(); 
+            int participantsCount = GetInteger(GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_PARTICIPANTS_COUNT)));
+
+            var list = new List<Participant>();
             for (int i = 1 ; i <= participantsCount ; i++)
-            {                
-                yield return new Participant
-                {
-                    Name = GetAnswerFrom(string.Format(_questions.Get(QuestionsServer.QUESTION_PARTICPANT_NAME), i)),
-                    Email = GetAnswerFrom(string.Format(_questions.Get(QuestionsServer.QUESTION_PARTICPANT_EMAIL), i))
-                };
+            {   
+                var participant = new Participant();
+
+                participant.Name = CheckDistinctString(
+                    GetAnswerFrom(string.Format(_questions.Get(QuestionsServer.QUESTION_PARTICPANT_NAME), i)), 
+                    list.Select(o => o.Name), 
+                    _questions.Get(QuestionsServer.WARNING_NAME_EXISTS));
+
+                participant.Email = CheckDistinctString(
+                    GetAnswerFrom(string.Format(_questions.Get(QuestionsServer.QUESTION_PARTICPANT_EMAIL), i)), 
+                    list.Select(o => o.Email), 
+                    _questions.Get(QuestionsServer.WARNING_EMAIL_EXISTS));
+
+                list.Add(participant);
             }
+            return list;
         }
 
         private string GetMailSubject()
@@ -72,14 +98,14 @@ namespace SecretSanta
 
         private MailProviderSettings GetMailProviderSettings()
         {
-            var settings = MailProviderSettings.Get(AskMailProviderQuestion(_questions));
+            var settings = MailProviderSettings.Get(AskMailProviderQuestion());
             if (settings == null)
-                settings = AskCustomMailProviderSettings(_questions);
+                settings = AskCustomMailProviderSettings();
             
             return settings;
         }
 
-        private MailProvider AskMailProviderQuestion(QuestionsServer questions)
+        private MailProvider AskMailProviderQuestion()
         {
             Console.WriteLine(); 
             WriteSlow(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER));
@@ -103,10 +129,10 @@ namespace SecretSanta
             System.Threading.Thread.Sleep(500);
 
             var selectedProvider = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER_INDEX));
-            return dic[GetInteger(questions, selectedProvider, idx)];
+            return dic[GetInteger(selectedProvider, max: idx)];
         }
         
-        private MailProviderSettings AskCustomMailProviderSettings(QuestionsServer questions)
+        private MailProviderSettings AskCustomMailProviderSettings()
         {
             Console.WriteLine(); 
             WriteSlow(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER_MANUAL));
@@ -123,6 +149,7 @@ namespace SecretSanta
             WriteSlow(_questions.Get(QuestionsServer.QUESTION_USER_EMAIL_SETUP));            
             var email = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_EMAIL)); 
             var password = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_PASSWORD));
+            Console.WriteLine();  
             return (email, password);
         }
 
@@ -133,23 +160,36 @@ namespace SecretSanta
             Console.WriteLine();
             WriteSlow(_questions.Get(QuestionsServer.AUTO_THANKS));
             WriteSlow(_questions.Get(QuestionsServer.AUTO_THANKS_2), false);
-            Console.ReadLine();
+            ReadLine();
         }
         
         #endregion Questions
 
         #region Utils
 
-        private int GetInteger(QuestionsServer questions, string answer, int max = Int16.MaxValue)
+        private int GetInteger(string answer, int min = 1, int max = Int16.MaxValue, string errorMessage = null)
         {
             int count;            
-            while (!int.TryParse(answer, System.Globalization.NumberStyles.Integer, null, out count) || count > max)
+            while (!int.TryParse(answer, System.Globalization.NumberStyles.Integer, null, out count) || count < min || count > max)
             {
                 Console.WriteLine();  
-                WriteSlow(_questions.Get(QuestionsServer.WARNING_INTEGER));            
-                answer = Console.ReadLine();
+                WriteSlow(errorMessage ?? _questions.Get(QuestionsServer.WARNING_INTEGER));  
+                Console.Write(" > ");         
+                answer = ReadLine();
             }
             return count;
+        }
+        
+        private string CheckDistinctString(string answer, IEnumerable<string> existing, string errorMessage)
+        {
+            while (existing.Any(o => o.ToLowerInvariant() == answer.ToLowerInvariant()))
+            {
+                Console.WriteLine();  
+                WriteSlow(errorMessage);  
+                Console.Write(" > ");         
+                answer = ReadLine();
+            }
+            return answer;
         }
        
         private string GetAnswerFrom(string question)
@@ -157,7 +197,7 @@ namespace SecretSanta
             Console.WriteLine();  
             WriteSlow(question);
             Console.Write(" > ");
-            return Console.ReadLine();
+            return ReadLine();
         }
 
         private void DisplaySeparator(int index)
@@ -179,12 +219,18 @@ namespace SecretSanta
                 Console.WriteLine();
         }
 
+        private string ReadLine()
+        {
+            return Console.ReadLine()?.Trim();
+        }
+
         #endregion Utils
 
         private class QuestionsServer
         {
             public static string QUESTION_MAIL = "Q.MailSubject";
             public static string QUESTION_PARTICIPANTS = "Q.Participants";
+            public static string QUESTION_PARTICIPANTS_COUNT = "Q.ParticipantsCount";
             public static string QUESTION_PARTICPANT_NAME = "Q.ParticipantName";
             public static string QUESTION_PARTICPANT_EMAIL = "Q.ParticipantEmail";
             public static string QUESTION_USER_PROVIDER = "Q.UserProvider";
@@ -201,6 +247,8 @@ namespace SecretSanta
             public static string AUTO_THANKS_2 = "Auto.Thanks2";
             public static string AUTO_BODY_TITLE = "Auto.BodyTitle";
             public static string WARNING_INTEGER = "Warning.BadInteger";
+            public static string WARNING_NAME_EXISTS = "Warning.NameExists";
+            public static string WARNING_EMAIL_EXISTS = "Warning.EmailExists";
 
             private JObject _locale;
 

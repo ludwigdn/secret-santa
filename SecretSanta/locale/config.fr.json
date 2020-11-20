@@ -1,7 +1,8 @@
 {    
     "Q" : {
         "MailSubject" : "Veuillez saisir l'objet du mail envoyé à tous les participants de votre Secret Santa",
-        "Participants" : "Veuillez maintenant saisir le nombre de participants (vous inclus):",
+        "Participants" : "Vous allez maintenant saisir les participants (vous inclus). Chaque particpant devra avoir un email et un nom bien distinct (même si certaines de ces personnes ont le même prénom, afin de bien les distinguer).",
+        "ParticipantsCount" : "Veuillez maintenant saisir le nombre de participants (vous inclus):",
         "ParticipantName": "Nom du particpant #{0} :",
         "ParticipantEmail": "Email du particpant #{0} :",  
         "UserProvider": "Veuillez choisir votre service email parmis la liste suivante :",
@@ -18,12 +19,14 @@
     "Auto" : {
         "Body": "Vous avez été désigné pour offrir un cadeau à <span style=\"font-weight: bold; color: yellow;\">{0}</span>.</br></br>Essayez de lui faire un cadeau personnalisé ! Renseignez-vous auprès des autres pour savoir ce qui lui ferait plaisir :-)</br></br><div>Joyeuses fêtes à tous, et gardez la surprise jusqu'au bout !</div>",
         "BodyTitle" : "Le tirage au sort du Secret Santa a été effectué !",
-        "Thanks" : "Merci d'avoir utilisé cette application. Passez de bones fêtes de fin d'années !",
+        "Thanks" : "Merci d'avoir utilisé cette application. Passez de bonnes fêtes de fin d'années !",
         "Thanks2" : "Appuyez sur entrée pour arrêter..."
     },
 
     "Warning": {
-        "BadInteger": "Veuillez saisir un entier correct."
+        "BadInteger": "Veuillez saisir un entier correct.",
+        "NameExists": "Ce nom est déjà utilisé pour un autre participant. Essayez autre chose.",
+        "EmailExists": "Cet email est déjà utilisé pour un autre participant. Essayez autre chose."
     }
 
 }
