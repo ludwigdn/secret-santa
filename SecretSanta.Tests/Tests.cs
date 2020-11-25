@@ -12,7 +12,7 @@ namespace SecretSanta.Tests
     [TestFixture, Parallelizable]
     public class Tests
     {
-        private List<Participant> GetRandomizedList()
+        private List<Participant> GetRandomizedList(Random rand)
         {
             var list = new List<Participant>
             {
@@ -26,7 +26,7 @@ namespace SecretSanta.Tests
                 new Participant { Name = "Buckethead", Email = "buckethead@mail.com" }
             };
 
-            var randomizeService = new RandomizeService();
+            var randomizeService = new RandomizeService(rand);
             return randomizeService.Randomize(list);
         }
 
@@ -36,9 +36,10 @@ namespace SecretSanta.Tests
         [Test, Parallelizable]
         public void IsSetTest()
         {
+            var rand = new Random(DateTime.Now.Millisecond);
             for (int i = 0; i < 10000; i++)
             {
-                var result = GetRandomizedList();
+                var result = GetRandomizedList(rand);
                 Assert.IsTrue(result.Any());
                 Assert.IsTrue(result.All(o => o.IsSet));
             }
@@ -49,31 +50,28 @@ namespace SecretSanta.Tests
         /// </summary>
         [Test, Parallelizable]
         public void IsActuallyRandomizedTest()
-        {
-            var prev = GetRandomizedList();
-            for (int i = 0; i < 50; i++)
+        {            
+            bool AreDifferent(List<Participant> left, List<Participant> right)
             {
-                var current = GetRandomizedList();
-                Assert.IsFalse(AreSame(prev, current));
+                for (int i = 0 ; i < left.Count ; i++)
+                    if (left[i].Name == right[i].Name && left[i].ReceiverName == right[i].ReceiverName)
+                        return false;
+
+                return true;
+            }
+
+            List<bool> randomizedStates = new List<bool>();
+            var rand = new Random(DateTime.Now.Millisecond);
+            
+            var prev = GetRandomizedList(rand);
+            for (int i = 0; i < 10000; i++)
+            {
+                var current = GetRandomizedList(rand);
+                randomizedStates.Add(AreDifferent(prev, current));
                 prev = current;
             }
-        }
-
-
-        private bool AreSame(List<Participant> left, List<Participant> right)
-        {
-            for (int i = 0 ; i < left.Count ; i++)
-            {
-                var first = left[i];
-                var second = right[i];
-
-                if (first.Name == second.Name && first.ReceiverName == second.ReceiverName)
-                    continue;
-                
-                return false;
-            }
-
-            return true;
+            
+            Assert.IsFalse(randomizedStates.All(o => !o));
         }
 
         /// <summary>
@@ -82,20 +80,23 @@ namespace SecretSanta.Tests
         [Test, Parallelizable]
         public void RandomizationTest()
         {
+            var rand = new Random(DateTime.Now.Millisecond);
             HashSet<string> firstParticipants = new HashSet<string>();
             bool isWellRandomized = false;
 
             for (int i = 0; i < 100000; i++)
             {
-                firstParticipants.Add(GetRandomizedList()[0].Name);
+                firstParticipants.Add(GetRandomizedList(rand)[0].Name);
+
                 if (firstParticipants.Count > 1)
                 {
+                    // As soon as we reach at least two different participants, we can say the randomize process works
                     isWellRandomized = true;
                     break;
                 }
             }
 
-            // After 100000 loops, it'd be pretty odd if the first participant of each loop is always the same...
+            // With a maximum of 100000 loops, it'd be pretty odd if the first participant of each loop is always the same...
             Assert.IsTrue(isWellRandomized);
         }
 

@@ -19,26 +19,29 @@ namespace SecretSanta.Models
 
 
         public string ReceiverName { get; private set; }
+        public bool IsTaken { get; private set; }
 
         public bool IsSet => !string.IsNullOrWhiteSpace(ReceiverName) && ReceiverName != Name;
+        public bool CanBeTakenBy(Participant santa) => !IsTaken && santa.IsDifferentFrom(this);
+        public bool IsDifferentFrom(Participant other) => Name != other.Name && Name != other.ReceiverName;
 
-        public bool IsTaken(IEnumerable<Participant> Participants) => Participants.Any(o => o.ReceiverName == Name);
-
-        public void SetReceiver(string name)
+        public void SetAsTaken()
         {
-            ReceiverName = name;
+            IsTaken = true;
         }
 
-        public void ExchangeWith(Participant otherSanta)
+        public void SetReceiver(Participant other)
         {
-            var temp = ReceiverName;
-            SetReceiver(otherSanta.ReceiverName);
-            otherSanta.SetReceiver(temp);
+            ReceiverName = other.Name;
+            other.SetAsTaken();
         }
 
-        public bool IsDifferent(Participant receiver)
+        public void ExchangeWith(Participant other)
         {
-            return Name != receiver.Name && Name != receiver.ReceiverName;
+            var temp = other.ReceiverName;
+            other.SetReceiver(this);
+            ReceiverName = temp;
+            other.SetAsTaken();
         }
 
         public bool HasGiftIdeas()
