@@ -5,16 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SecretSanta
+namespace SecretSanta.Services
 {
-    public class Randomizer : IRandomizer
+    public class RandomizeService : IRandomizer
     {
-        private Random rand;
-
-        public Randomizer()
-        {
-            rand = new Random(DateTime.Now.Millisecond);
-        }
+        public RandomizeService() { }
 
         public List<Participant> Randomize(List<Participant> participants)
         {
@@ -28,7 +23,7 @@ namespace SecretSanta
 
         private void AssignSantas(List<Participant> participants)
         {
-            Shuffle(participants);
+            participants = Shuffle(participants);
             var santas = new List<Participant>(participants);
             for (var i = 0; i < santas.Count; i++)
             {
@@ -37,7 +32,7 @@ namespace SecretSanta
                     continue;
 
                 // Shuffle at each iteration to avoid "groups of 3s" (A>B>C, D>F>G, ...)
-                Shuffle(participants);
+                participants = Shuffle(participants);
 
                 // Take first free participant that differs from the current Santa
                 var receiver = participants.FirstOrDefault(o => !o.IsTaken(participants) && santa.IsDifferent(o));
@@ -60,17 +55,20 @@ namespace SecretSanta
             }
         }
 
-        private void Shuffle<Participant>(IList<Participant> list)
+        public List<Participant> Shuffle<Participant>(IList<Participant> list)
         {
+            var newList = new List<Participant>(list);
+            var rand = new Random(DateTime.Now.Millisecond);
             int n = list.Count;
             while (n > 1)
             {
                 n--;
                 int k = rand.Next(n + 1);
-                Participant value = list[k];
-                list[k] = list[n];
-                list[n] = value;
+                Participant value = newList[k];
+                newList[k] = newList[n];
+                newList[n] = value;
             }
+            return newList;
         }
     }
 }

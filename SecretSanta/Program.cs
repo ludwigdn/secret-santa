@@ -7,6 +7,9 @@ using Newtonsoft.Json.Bson;
 using System;
 using System.IO;
 using System.Linq;
+using SecretSanta.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SecretSanta
 {
@@ -20,36 +23,59 @@ namespace SecretSanta
 
         private static void Main(string[] args)
         {
-            var doManualConfig = args == null || !args.Any();
+            MainAsync(args).GetAwaiter().GetResult();
+        }
 
-            if (args == null || !args.Any())
+        private static async Task MainAsync(string[] args)
+        {            
+            if (!args?.Any() ?? true)
             {
-                var configurator = new ManualConfigurator();
-                SetConfig(configurator.Get());
-                configurator.DisplayEndProcess();
-                return;
-            }  
-            
-            Parser.Default.ParseArguments<Options>(args).WithParsed(SetConfig);
+                await SetManualConfig();
+            }   
+            else
+            {
+                await SetAutoConfig(args);
+            }
         }
 
-        private static void SetConfig(Options opt)
+        private static async Task SetAutoConfig(string[] args)
         {
-            Config.Instance.Parse(opt.ConfigPath?.Trim());
-            AssignSantasAndSendEmails();
+            await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async opt => 
+            {
+                Config.Instance.Parse(opt.ConfigPath?.Trim());
+                var localeService = new LocaleService(Config.Instance.Locale);
+                await AssignSantasAndSendEmails(localeService);
+            });
         }
 
-        private static void SetConfig(Config config)
+        private static async Task SetManualConfig()
         {
+            var configurator = new ManualConfigService();
+            var localeService = new LocaleService(configurator.Locale);
+
+            var config = configurator.GetConfig(localeService);
             Config.Instance.Parse(config);
-            AssignSantasAndSendEmails();
+
+            await AssignSantasAndSendEmails(localeService);
+
+            configurator.DisplayEndProcess();
         }
 
-        private static void AssignSantasAndSendEmails()
+        private static async Task AssignSantasAndSendEmails(LocaleService localeService)
         {
-            var randomizer = new Randomizer();
-            var santas = randomizer.Randomize(Config.Instance.Participants);
-            new MailSender().Send(santas).Wait();
+            var santas = new RandomizeService().Randomize(Config.Instance.Participants);
+
+            var mailservice = new MailService();
+            var mailMessageFormatter = new MailMessageFormatter(localeService);
+            
+            var tasks = new List<Task>();
+            foreach (var santa in santas)
+            {
+                var body = mailMessageFormatter.GetHtmlBody(santa);
+                tasks.Add(mailservice.Send(santa, body));
+            }
+            
+            await Task.WhenAll(tasks);
         }        
     }
 }

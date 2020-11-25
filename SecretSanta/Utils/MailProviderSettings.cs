@@ -9,7 +9,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SecretSanta
+namespace SecretSanta.Utils
 {
     public class MailProviderSettings
     {

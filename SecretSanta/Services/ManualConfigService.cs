@@ -4,38 +4,45 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using SecretSanta.Models;
+using SecretSanta.Utils;
 
-namespace SecretSanta
+namespace SecretSanta.Services
 {
-    public class ManualConfigurator
+    public class ManualConfigService
     {
-        private QuestionsServer _questions;
+        private int _step = 1;
+        private LocaleService _localeService;
 
-        public Config Get()
-        {            
-            int index = 1;
+        public string Locale { get; private set; }
 
-            DisplaySeparator(index++);
-            var lang = GetLanguage();
+        public ManualConfigService()
+        {
+            DisplaySeparator(_step++);
+            Locale = GetLanguage();
+        }
 
-            _questions = new QuestionsServer(lang);
+        public Config GetConfig(LocaleService localeService)
+        {
+            _localeService = localeService;
 
             var config = new Config();
-            config.MailBodyTitle = _questions.Get(QuestionsServer.AUTO_BODY_TITLE);
-            config.MailBody = _questions.Get(QuestionsServer.AUTO_BODY);
+            config.Locale = Locale;
 
-            DisplaySeparator(index++);
+            config.MailBodyTitle = _localeService.Get(LocaleService.AUTO_BODY_TITLE);
+            config.MailBody = _localeService.Get(LocaleService.AUTO_BODY);
+
+            DisplaySeparator(_step++);
             config.MailSubject = GetMailSubject();
 
-            DisplaySeparator(index++);
+            DisplaySeparator(_step++);
             config.Participants.AddRange(GetParticipants());
             
-            DisplaySeparator(index++);
+            DisplaySeparator(_step++);
             var mailProviderSettings = GetMailProviderSettings();            
             config.SmtpHost = mailProviderSettings.SMTP_HOST;
             config.SmtpPort = mailProviderSettings.SMTP_PORT;
 
-            DisplaySeparator(index++);
+            DisplaySeparator(_step++);
             var credentials = GetUserCredentials();
             config.SmtpEmail = credentials.email;
             config.SmtpPassword = credentials.password;
@@ -67,9 +74,9 @@ namespace SecretSanta
         private List<Participant> GetParticipants()
         {
             Console.WriteLine(); 
-            WriteSlow(_questions.Get(QuestionsServer.QUESTION_PARTICIPANTS)); 
+            WriteSlow(_localeService.Get(LocaleService.QUESTION_PARTICIPANTS)); 
             Console.WriteLine(); 
-            int participantsCount = GetInteger(GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_PARTICIPANTS_COUNT)));
+            int participantsCount = GetInteger(GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_PARTICIPANTS_COUNT)));
 
             var list = new List<Participant>();
             for (int i = 1 ; i <= participantsCount ; i++)
@@ -77,14 +84,14 @@ namespace SecretSanta
                 var participant = new Participant();
 
                 participant.Name = CheckDistinctString(
-                    GetAnswerFrom(string.Format(_questions.Get(QuestionsServer.QUESTION_PARTICPANT_NAME), i)), 
+                    GetAnswerFrom(string.Format(_localeService.Get(LocaleService.QUESTION_PARTICPANT_NAME), i)), 
                     list.Select(o => o.Name), 
-                    _questions.Get(QuestionsServer.WARNING_NAME_EXISTS));
+                    _localeService.Get(LocaleService.WARNING_NAME_EXISTS));
 
                 participant.Email = CheckDistinctString(
-                    GetAnswerFrom(string.Format(_questions.Get(QuestionsServer.QUESTION_PARTICPANT_EMAIL), i)), 
+                    GetAnswerFrom(string.Format(_localeService.Get(LocaleService.QUESTION_PARTICPANT_EMAIL), i)), 
                     list.Select(o => o.Email), 
-                    _questions.Get(QuestionsServer.WARNING_EMAIL_EXISTS));
+                    _localeService.Get(LocaleService.WARNING_EMAIL_EXISTS));
 
                 list.Add(participant);
             }
@@ -93,7 +100,7 @@ namespace SecretSanta
 
         private string GetMailSubject()
         {
-            return GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_MAIL));
+            return GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_MAIL));
         }
 
         private MailProviderSettings GetMailProviderSettings()
@@ -108,7 +115,7 @@ namespace SecretSanta
         private MailProvider AskMailProviderQuestion()
         {
             Console.WriteLine(); 
-            WriteSlow(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER));
+            WriteSlow(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER));
             Console.WriteLine(); 
 
             System.Threading.Thread.Sleep(500);
@@ -120,7 +127,7 @@ namespace SecretSanta
                 dic.Add(idx, (MailProvider)value);
                 
                 var displayedValue = (MailProvider)value == MailProvider.UNKOWN
-                    ? _questions.Get(QuestionsServer.QUESTION_USER_PROVIDER_UNKNOWN)
+                    ? _localeService.Get(LocaleService.QUESTION_USER_PROVIDER_UNKNOWN)
                     : $"{value}";
 
                 Console.WriteLine($"   {idx ++}. {displayedValue}");
@@ -128,17 +135,17 @@ namespace SecretSanta
             
             System.Threading.Thread.Sleep(500);
 
-            var selectedProvider = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER_INDEX));
+            var selectedProvider = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER_INDEX));
             return dic[GetInteger(selectedProvider, max: idx)];
         }
         
         private MailProviderSettings AskCustomMailProviderSettings()
         {
             Console.WriteLine(); 
-            WriteSlow(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER_MANUAL));
+            WriteSlow(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER_MANUAL));
 
-            var host = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER_HOST));
-            var port = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_PROVIDER_PORT));
+            var host = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER_HOST));
+            var port = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER_PORT));
 
             return new MailProviderSettings(host, port);
         }
@@ -146,9 +153,9 @@ namespace SecretSanta
         private (string email, string password) GetUserCredentials()
         {
             Console.WriteLine(); 
-            WriteSlow(_questions.Get(QuestionsServer.QUESTION_USER_EMAIL_SETUP));            
-            var email = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_EMAIL)); 
-            var password = GetAnswerFrom(_questions.Get(QuestionsServer.QUESTION_USER_PASSWORD));
+            WriteSlow(_localeService.Get(LocaleService.QUESTION_USER_EMAIL_SETUP));            
+            var email = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_EMAIL)); 
+            var password = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_PASSWORD));
             Console.WriteLine();  
             return (email, password);
         }
@@ -158,8 +165,8 @@ namespace SecretSanta
             Console.WriteLine();
             Console.WriteLine($"===================================================");
             Console.WriteLine();
-            WriteSlow(_questions.Get(QuestionsServer.AUTO_THANKS));
-            WriteSlow(_questions.Get(QuestionsServer.AUTO_THANKS_2), false);
+            WriteSlow(_localeService.Get(LocaleService.AUTO_THANKS));
+            WriteSlow(_localeService.Get(LocaleService.AUTO_THANKS_2), false);
             ReadLine();
         }
         
@@ -173,7 +180,7 @@ namespace SecretSanta
             while (!int.TryParse(answer, System.Globalization.NumberStyles.Integer, null, out count) || count < min || count > max)
             {
                 Console.WriteLine();  
-                WriteSlow(errorMessage ?? _questions.Get(QuestionsServer.WARNING_INTEGER));  
+                WriteSlow(errorMessage ?? _localeService.Get(LocaleService.WARNING_INTEGER));  
                 Console.Write(" > ");         
                 answer = ReadLine();
             }
@@ -200,11 +207,11 @@ namespace SecretSanta
             return ReadLine();
         }
 
-        private void DisplaySeparator(int index)
+        private void DisplaySeparator(int _step)
         {
             System.Threading.Thread.Sleep(500);
             Console.WriteLine();
-            Console.WriteLine($"# {index} ===============================================");
+            Console.WriteLine($"# {_step} ===============================================");
         }
 
         private void WriteSlow(string text, bool addLine = true)
@@ -226,42 +233,5 @@ namespace SecretSanta
 
         #endregion Utils
 
-        private class QuestionsServer
-        {
-            public static string QUESTION_MAIL = "Q.MailSubject";
-            public static string QUESTION_PARTICIPANTS = "Q.Participants";
-            public static string QUESTION_PARTICIPANTS_COUNT = "Q.ParticipantsCount";
-            public static string QUESTION_PARTICPANT_NAME = "Q.ParticipantName";
-            public static string QUESTION_PARTICPANT_EMAIL = "Q.ParticipantEmail";
-            public static string QUESTION_USER_PROVIDER = "Q.UserProvider";
-            public static string QUESTION_USER_PROVIDER_INDEX = "Q.UserProviderIndex";
-            public static string QUESTION_USER_PROVIDER_UNKNOWN = "Q.UserProviderUnown";
-            public static string QUESTION_USER_PROVIDER_MANUAL = "Q.UserProviderManual";   
-            public static string QUESTION_USER_PROVIDER_HOST = "Q.UserProviderManualSmtpHost";   
-            public static string QUESTION_USER_PROVIDER_PORT = "Q.UserProviderManualSmtpPort";            
-            public static string QUESTION_USER_EMAIL_SETUP = "Q.UserEmailAccountSetup";       
-            public static string QUESTION_USER_EMAIL = "Q.UserEmail";
-            public static string QUESTION_USER_PASSWORD = "Q.UserPassword";
-            public static string AUTO_BODY = "Auto.Body";
-            public static string AUTO_THANKS = "Auto.Thanks";
-            public static string AUTO_THANKS_2 = "Auto.Thanks2";
-            public static string AUTO_BODY_TITLE = "Auto.BodyTitle";
-            public static string WARNING_INTEGER = "Warning.BadInteger";
-            public static string WARNING_NAME_EXISTS = "Warning.NameExists";
-            public static string WARNING_EMAIL_EXISTS = "Warning.EmailExists";
-
-            private JObject _locale;
-
-            public QuestionsServer(string lang)
-            {
-                var file = File.ReadAllText($"./locale/config.{lang}.json");
-                _locale = JObject.Parse(file);
-            }
-
-            public string Get(string path)
-            {
-                return (string)_locale.SelectToken(path);
-            }
-        }
     }
 }

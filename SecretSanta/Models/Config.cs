@@ -12,6 +12,9 @@ namespace SecretSanta
     public sealed class Config
     {
         [DataMember]
+        public string Locale { get; set; }
+        
+        [DataMember]
         public string MailSubject { get; set; }
 
         [DataMember]
@@ -40,6 +43,7 @@ namespace SecretSanta
         {
             var fileContent = File.ReadAllText(filePath);
             var config = JsonConvert.DeserializeObject<Config>(fileContent);
+            Locale = config.Locale;
             MailSubject = config.MailSubject;
             MailBodyTitle = config.MailBodyTitle;
             MailBody = config.MailBody;
@@ -52,6 +56,7 @@ namespace SecretSanta
 
         public void Parse(Config config)
         {
+            Locale = config.Locale;
             MailSubject = config.MailSubject;
             MailBodyTitle = config.MailBodyTitle;
             MailBody = config.MailBody;

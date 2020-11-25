@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using SecretSanta;
+using SecretSanta.Services;
 using SecretSanta.Models;
+using SecretSanta.Utils;
 
 namespace SecretSanta.Tests
 {
@@ -13,19 +15,19 @@ namespace SecretSanta.Tests
         private List<Participant> GetRandomizedList()
         {
             var list = new List<Participant>
-                {
-                    new Participant { Name = "B.B. King" },
-                    new Participant { Name = "Eric Clapton" },
-                    new Participant { Name = "Jimmy Page" },
-                    new Participant { Name = "David Gilmour" },
-                    new Participant { Name = "Slash" },
-                    new Participant { Name = "Brian May" },
-                    new Participant { Name = "Chuck Berry" },
-                    new Participant { Name = "Buckethead" }
-                };
+            {
+                new Participant { Name = "B.B. King", Email = "bbking@mail.com" },
+                new Participant { Name = "Eric Clapton", Email = "ericclapton@mail.com" },
+                new Participant { Name = "Jimmy Page", Email = "jimmypage@mail.com" },
+                new Participant { Name = "David Gilmour", Email = "davidgilmour@mail.com" },
+                new Participant { Name = "Slash", Email = "slash@mail.com" },
+                new Participant { Name = "Brian May", Email = "brianmay@mail.com" },
+                new Participant { Name = "Chuck Berry", Email = "chuckberry@mail.com" },
+                new Participant { Name = "Buckethead", Email = "buckethead@mail.com" }
+            };
 
-            var randomizer = new Randomizer();
-            return randomizer.Randomize(list);
+            var randomizeService = new RandomizeService();
+            return randomizeService.Randomize(list);
         }
 
         /// <summary>
@@ -40,6 +42,38 @@ namespace SecretSanta.Tests
                 Assert.IsTrue(result.Any());
                 Assert.IsTrue(result.All(o => o.IsSet));
             }
+        }
+
+        /// <summary>
+        /// Ensure list is always well randomized whenn calling RandomizeService.Randomize()
+        /// </summary>
+        [Test, Parallelizable]
+        public void IsActuallyRandomizedTest()
+        {
+            var prev = GetRandomizedList();
+            for (int i = 0; i < 50; i++)
+            {
+                var current = GetRandomizedList();
+                Assert.IsFalse(AreSame(prev, current));
+                prev = current;
+            }
+        }
+
+
+        private bool AreSame(List<Participant> left, List<Participant> right)
+        {
+            for (int i = 0 ; i < left.Count ; i++)
+            {
+                var first = left[i];
+                var second = right[i];
+
+                if (first.Name == second.Name && first.ReceiverName == second.ReceiverName)
+                    continue;
+                
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

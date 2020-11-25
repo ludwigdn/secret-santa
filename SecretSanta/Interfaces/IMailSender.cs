@@ -8,6 +8,6 @@ namespace SecretSanta.Interfaces
 {
     public interface ImailSender
     {
-        public Task Send(List<Participant> participants);
+        public Task Send(Participant santa, string body);
     }
 }

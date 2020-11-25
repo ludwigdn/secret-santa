@@ -14,6 +14,10 @@ namespace SecretSanta.Models
         [DataMember]
         public string Name { get; set; }
 
+        [DataMember]
+        public List<string> GiftIdeas { get; set; } = new List<string>();
+
+
         public string ReceiverName { get; private set; }
 
         public bool IsSet => !string.IsNullOrWhiteSpace(ReceiverName) && ReceiverName != Name;
@@ -35,6 +39,11 @@ namespace SecretSanta.Models
         public bool IsDifferent(Participant receiver)
         {
             return Name != receiver.Name && Name != receiver.ReceiverName;
+        }
+
+        public bool HasGiftIdeas()
+        {
+            return GiftIdeas?.Any(o => !string.IsNullOrWhiteSpace(o)) ?? false;
         }
 
         public override string ToString()
