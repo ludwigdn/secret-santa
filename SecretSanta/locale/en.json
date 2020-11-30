@@ -17,8 +17,8 @@
     },
 
     "Auto" : {
-        "Body": "You were chosen to give a present to <span style=\"font-weight: bold; color: yellow;\">{0}</span>. Try to fit to what they like!<p>If you have no clue, just ask around :-)</p><div>Happy Holidays to all, and keep the secret until the last minute !</div>",
-        "BodyWithGifts": "You were chosen to give a present to <span style=\"font-weight: bold; color: yellow;\">{0}</span>. Here's a list of stuff that could please them: {1}<p>You can also try to give a real surprise :-)</p><div>Happy Holidays to all, and keep the secret until the last minute !</div>",
+        "Body": "{0}, you were chosen to give a present to <span style=\"font-weight: bold; color: yellow;\">{1}</span>. Try to fit to what they like!<p>If you have no clue, just ask around :-)</p><div>Happy Holidays to all, and keep the secret until the last minute !</div>",
+        "BodyWithGifts": "{0}, you were chosen to give a present to <span style=\"font-weight: bold; color: yellow;\">{1}</span>. Here's a list of stuff that could please them: {2}<p></p><div>Happy Holidays to all, and keep the secret until the last minute !</div>",
         "BodyTitle" : "Secret Santas have been chosen!",
         "Thanks" : "Thanks for using this app. Season's greetings !",
         "Thanks2" : "Press enter to stop..."

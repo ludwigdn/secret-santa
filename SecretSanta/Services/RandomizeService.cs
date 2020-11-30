@@ -61,7 +61,7 @@ namespace SecretSanta.Services
 
                 // Get first assigned santa, that differs from current and exchange their receivers
                 participants.Where(o => o.IsTaken)
-                    .Where(o => o.ReceiverName != santa.Name)
+                    .Where(o => o.ReceiversName != santa.Name)
                     .First(o => o.Name != receiver.Name)
                     .ExchangeWith(santa);
             }

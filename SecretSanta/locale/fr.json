@@ -17,8 +17,8 @@
     },
 
     "Auto" : {
-        "Body": "Vous avez été désigné pour offrir un cadeau à <span style=\"font-weight: bold; color: yellow;\">{0}</span>. Essayez de lui faire un cadeau personnalisé !<p>Renseignez-vous auprès des autres pour savoir ce qui lui ferait plaisir :-)</p><div>Joyeuses fêtes à tous, et gardez la surprise jusqu'au bout !</div>",
-        "BodyWithGifts": "Vous avez été désigné pour offrir un cadeau à <span style=\"font-weight: bold; color: yellow;\">{0}</span>.Voici quelques idées qui lui feraient plaisir: {1}<p>Vous pouvez aussi essayer de lui faire une vraie surprise :-)</p><div>Joyeuses fêtes à tous, et gardez la surprise jusqu'au bout !</div>",
+        "Body": "{0}, vous allez offrir un cadeau à <span style=\"font-weight: bold; color: yellow;\">{1}</span>. Essayez de lui faire un cadeau personnalisé !<p>Renseignez-vous auprès des autres pour savoir ce qui lui ferait plaisir :-)</p><div>Joyeuses fêtes à tous, et gardez la surprise jusqu'au bout !</div>",
+        "BodyWithGifts": "{0}, vous allez offrir un cadeau à <span style=\"font-weight: bold; color: yellow;\">{1}</span>.Voici quelques idées qui lui feraient plaisir : {2}<p></p><div>Joyeuses fêtes à tous, et gardez la surprise jusqu'au bout !</div>",
         "BodyTitle" : "Le tirage au sort du Secret Santa a été effectué !",
         "Thanks" : "Merci d'avoir utilisé cette application. Passez de bonnes fêtes de fin d'années !",
         "Thanks2" : "Appuyez sur entrée pour arrêter..."

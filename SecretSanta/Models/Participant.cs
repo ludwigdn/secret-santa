@@ -18,12 +18,15 @@ namespace SecretSanta.Models
         public List<string> GiftIdeas { get; set; } = new List<string>();
 
 
-        public string ReceiverName { get; private set; }
+        public string ReceiversName => _receiver?.Name;
+        public List<string> ReceiversList => _receiver?.GiftIdeas ?? new List<string>();
         public bool IsTaken { get; private set; }
 
-        public bool IsSet => !string.IsNullOrWhiteSpace(ReceiverName) && ReceiverName != Name;
+        public bool IsSet => !string.IsNullOrWhiteSpace(ReceiversName) && ReceiversName != Name;
         public bool CanBeTakenBy(Participant santa) => !IsTaken && santa.IsDifferentFrom(this);
-        public bool IsDifferentFrom(Participant other) => Name != other.Name && Name != other.ReceiverName;
+        public bool IsDifferentFrom(Participant other) => Name != other.Name && Name != other.ReceiversName;
+
+        private Participant _receiver { get; set; }
 
         public void SetAsTaken()
         {
@@ -32,16 +35,15 @@ namespace SecretSanta.Models
 
         public void SetReceiver(Participant other)
         {
-            ReceiverName = other.Name;
+            _receiver = other;
             other.SetAsTaken();
         }
 
         public void ExchangeWith(Participant other)
         {
-            var temp = other.ReceiverName;
-            other.SetReceiver(this);
-            ReceiverName = temp;
-            other.SetAsTaken();
+            var temp = other._receiver;
+            other.SetReceiver(_receiver);
+            SetReceiver(temp);
         }
 
         public bool HasGiftIdeas()
@@ -51,7 +53,7 @@ namespace SecretSanta.Models
 
         public override string ToString()
         {
-            return $"{Email} - {Name} -> {ReceiverName}";
+            return $"{Email} - {Name} -> {ReceiversName}";
         }
     }
 }

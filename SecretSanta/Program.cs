@@ -68,14 +68,12 @@ namespace SecretSanta
             var mailservice = new MailService();
             var mailMessageFormatter = new MailMessageFormatter(localeService);
             
-            var tasks = new List<Task>();
+            // Todo: try to put back Task.WhenAll on Send() without having 'too much connections' issue
             foreach (var santa in santas)
             {
                 var body = mailMessageFormatter.GetHtmlBody(santa);
-                tasks.Add(mailservice.Send(santa, body));
+                await mailservice.Send(santa, body);
             }
-            
-            await Task.WhenAll(tasks);
         }        
     }
 }

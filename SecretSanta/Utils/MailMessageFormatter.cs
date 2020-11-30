@@ -29,13 +29,13 @@ namespace SecretSanta.Services
             if (santa.HasGiftIdeas())
             {
                 var body = _localeService.Get(LocaleService.AUTO_BODY_WITH_GIFTS);
-                var giftsHtml = GetGiftIdeasFormatted(santa.GiftIdeas);
-                bodyMessage = string.Format(body, santa.ReceiverName, giftsHtml);
+                var giftsHtml = GetGiftIdeasFormatted(santa.ReceiversList);
+                bodyMessage = string.Format(body, santa.Name, santa.ReceiversName, giftsHtml);
             }
             else
             {
                 var body = _localeService.Get(LocaleService.AUTO_BODY);
-                bodyMessage = string.Format(body, santa.ReceiverName);
+                bodyMessage = string.Format(body, santa.Name, santa.ReceiversName);
             }
 
             return "<!DOCTYPE html>"
