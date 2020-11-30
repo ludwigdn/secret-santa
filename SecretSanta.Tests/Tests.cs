@@ -54,7 +54,7 @@ namespace SecretSanta.Tests
             bool AreDifferent(List<Participant> left, List<Participant> right)
             {
                 for (int i = 0 ; i < left.Count ; i++)
-                    if (left[i].Name == right[i].Name && left[i].ReceiverName == right[i].ReceiverName)
+                    if (left[i].Name == right[i].Name && left[i].ReceiversName == right[i].ReceiversName)
                         return false;
 
                 return true;
