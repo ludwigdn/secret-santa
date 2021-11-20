@@ -17,11 +17,9 @@ namespace SecretSanta.Models
         [DataMember]
         public List<string> GiftIdeas { get; set; } = new List<string>();
 
-
         public string ReceiversName => _receiver?.Name;
         public List<string> ReceiversList => _receiver?.GiftIdeas ?? new List<string>();
         public bool IsTaken { get; private set; }
-
         public bool IsSet => !string.IsNullOrWhiteSpace(ReceiversName) && ReceiversName != Name;
         public bool CanBeTakenBy(Participant santa) => !IsTaken && santa.IsDifferentFrom(this);
         public bool IsDifferentFrom(Participant other) => Name != other.Name && Name != other.ReceiversName;
@@ -46,14 +44,9 @@ namespace SecretSanta.Models
             SetReceiver(temp);
         }
 
-        public bool HasGiftIdeas()
-        {
-            return GiftIdeas?.Any(o => !string.IsNullOrWhiteSpace(o)) ?? false;
-        }
-
         public override string ToString()
         {
-            return $"{Email} - {Name} -> {ReceiversName}";
+            return $"{Name} ({Email}) -> {ReceiversName}";
         }
     }
 }

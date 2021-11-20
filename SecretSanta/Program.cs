@@ -27,11 +27,11 @@ namespace SecretSanta
         }
 
         private static async Task MainAsync(string[] args)
-        {            
+        {
             if (!args?.Any() ?? true)
             {
                 await SetManualConfig();
-            }   
+            }
             else
             {
                 await SetAutoConfig(args);
@@ -40,7 +40,7 @@ namespace SecretSanta
 
         private static async Task SetAutoConfig(string[] args)
         {
-            await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async opt => 
+            await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async opt =>
             {
                 Config.Instance.Parse(opt.ConfigPath?.Trim());
                 var localeService = new LocaleService(Config.Instance.Locale);
@@ -67,13 +67,13 @@ namespace SecretSanta
 
             var mailservice = new MailService();
             var mailMessageFormatter = new MailMessageFormatter(localeService);
-            
+
             // Todo: try to put back Task.WhenAll on Send() without having 'too much connections' issue
             foreach (var santa in santas)
             {
                 var body = mailMessageFormatter.GetHtmlBody(santa);
                 await mailservice.Send(santa, body);
             }
-        }        
+        }
     }
 }

@@ -25,8 +25,8 @@ namespace SecretSanta.Services
         public string GetHtmlBody(Participant santa)
         {
             string bodyMessage;
-            
-            if (santa.HasGiftIdeas())
+
+            if (santa.ReceiversList.Any())
             {
                 var body = _localeService.Get(LocaleService.AUTO_BODY_WITH_GIFTS);
                 var giftsHtml = GetGiftIdeasFormatted(santa.ReceiversList);
@@ -56,7 +56,7 @@ namespace SecretSanta.Services
             + "<span style=\"opacity: 60%; background-color: yellow; height: 30px; width: 30px; border-radius: 50%; margin: 0 20px; border: 0px black solid;\"></span>"
             + "<span style=\"opacity: 60%; background-color: blue; height: 30px; width: 30px; border-radius: 50%; margin: 0 20px; border: 0px black solid;\"></span>"
             + "<span style=\"opacity: 60%; background-color: green; height: 30px; width: 30px; border-radius: 50%; margin: 0 20px; border: 0px black solid;\"></span>"
-            + "<span style=\"opacity: 60%; background-color: red; height: 30px; width: 30px; border-radius: 50%; margin: 0 20px; border: 0px black solid;\"></span>"               
+            + "<span style=\"opacity: 60%; background-color: red; height: 30px; width: 30px; border-radius: 50%; margin: 0 20px; border: 0px black solid;\"></span>"
             + "</div>"
             + "</div>"
             + $"<p>{bodyMessage}</p>"
@@ -73,7 +73,7 @@ namespace SecretSanta.Services
 
             foreach (var gift in giftIdeas.Where(o => !string.IsNullOrWhiteSpace(o)))
                 stringBuilder.AppendLine($"<li>{gift}</li>");
-            
+
             stringBuilder.AppendLine("</ul>");
 
             return stringBuilder.ToString();
