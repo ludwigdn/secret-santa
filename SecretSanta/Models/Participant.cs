@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace SecretSanta.Models
 {
     public class Participant
     {
+        // Properties
+        // ==========
+
+        // Private
+        private Participant _receiver { get; set; }
+
+        // Public
         [DataMember]
         public string Email { get; set; }
 
@@ -17,36 +22,59 @@ namespace SecretSanta.Models
         [DataMember]
         public List<string> GiftIdeas { get; set; } = new List<string>();
 
-        public string ReceiversName => _receiver?.Name;
-        public List<string> ReceiversList => _receiver?.GiftIdeas ?? new List<string>();
-        public bool IsTaken { get; private set; }
-        public bool IsSet => !string.IsNullOrWhiteSpace(ReceiversName) && ReceiversName != Name;
-        public bool CanBeTakenBy(Participant santa) => !IsTaken && santa.IsDifferentFrom(this);
-        public bool IsDifferentFrom(Participant other) => Name != other.Name && Name != other.ReceiversName;
+        [DataMember]
+        public string Partner { get; set; }
 
-        private Participant _receiver { get; set; }
+        public List<Participant> PossibleReceivers { get; set; }
+
+        public List<string> PossibleReceiversNames { get; set; }
+
+        public bool IsTaken { get; private set; }
+
+        public string ReceiversName => _receiver?.Name;
+
+        public List<string> ReceiversList => _receiver.GiftIdeas;
+
+
+        // Functions
+        // =========
+
+        public bool IsSet =>
+          !string.IsNullOrWhiteSpace(ReceiversName);
+
+        public bool HasAsPossibleReceiver(string possibleReceiversName) =>
+          PossibleReceiversNames.Contains(possibleReceiversName);
+
+        public bool CanBeTakenBy(Participant santa) =>
+          Name != santa.Name &&
+          Name != santa.Partner;
+
+        public void SetPosibleReceivers(IEnumerable<Participant> possibleReceivers)
+        {
+          PossibleReceivers = possibleReceivers.ToList();
+          PossibleReceiversNames = possibleReceivers.Select(o => o.Name).ToList();
+        }
 
         public void SetAsTaken()
         {
-            IsTaken = true;
+          IsTaken = true;
         }
 
-        public void SetReceiver(Participant other)
+        public void SetReceiver(Participant receiver)
         {
-            _receiver = other;
-            other.SetAsTaken();
+            _receiver = receiver;
+            _receiver.SetAsTaken();
         }
 
-        public void ExchangeWith(Participant other)
+        public void ExchangeWith(Participant tradingPal)
         {
-            var temp = other._receiver;
-            other.SetReceiver(_receiver);
-            SetReceiver(temp);
+            var new_receiver = tradingPal._receiver;
+            tradingPal.SetReceiver(_receiver);
+            SetReceiver(new_receiver);
         }
 
-        public override string ToString()
-        {
-            return $"{Name} ({Email}) -> {ReceiversName}";
-        }
+        public override string ToString() => $"{Name} ({Email}) " +
+          $"| Partner is {Partner ?? "nobody"} " +
+          $"| Receiver is {ReceiversName}";
     }
 }

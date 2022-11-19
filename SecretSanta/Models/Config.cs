@@ -1,19 +1,19 @@
 ﻿using Newtonsoft.Json;
 using SecretSanta.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace SecretSanta
 {
     public sealed class Config
     {
         [DataMember]
+        public bool DryRun { get; set; }
+
+        [DataMember]
         public string Locale { get; set; }
-        
+
         [DataMember]
         public string MailSubject { get; set; }
 
@@ -37,10 +37,11 @@ namespace SecretSanta
 
         [DataMember]
         public List<Participant> Participants { get; set; } = new List<Participant>();
-        public Config() { }     
+        public Config() { }
 
-        public void Parse(string filePath)
+        public void Parse(string filePath, bool dryRun)
         {
+            DryRun = dryRun || false;
             var fileContent = File.ReadAllText(filePath);
             var config = JsonConvert.DeserializeObject<Config>(fileContent);
             Locale = config.Locale;
@@ -65,7 +66,7 @@ namespace SecretSanta
             SmtpHost = config.SmtpHost;
             SmtpPort = config.SmtpPort;
             Participants = config.Participants;
-        }  
+        }
 
         #region Singleton stuff
 
@@ -82,10 +83,10 @@ namespace SecretSanta
                     lock (instanceLock)
                     {
                         if (instance == null)
-                            instance = new Config();                        
+                            instance = new Config();
                     }
                 }
-                
+
                 return instance;
             }
         }

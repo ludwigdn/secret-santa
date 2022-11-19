@@ -1,14 +1,3 @@
-using MailKit.Net.Smtp;
-using MimeKit;
-using MimeKit.Text;
-using SecretSanta.Interfaces;
-using SecretSanta.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace SecretSanta.Utils
 {
     public class MailProviderSettings
@@ -19,13 +8,13 @@ namespace SecretSanta.Utils
         public MailProviderSettings(string host, string port)
         {
             SMTP_HOST = host;
-            SMTP_PORT = port;            
+            SMTP_PORT = port;
         }
-        
+
         private MailProviderSettings() { }
 
         public static MailProviderSettings Get(MailProvider provider)
-        {       
+        {
             string host;
             string port;
 
@@ -40,23 +29,23 @@ namespace SecretSanta.Utils
                     host = "smtp.aol.com";
                     port = "465";
                     break;
-                    
+
                 case MailProvider.BOUYGUES:
                 case MailProvider.BBOX:
                     host = "smtp.bbox.fr";
                     port = "587";
                     break;
-                    
+
                 case MailProvider.FREE:
                     host = "smtp.free.fr";
                     port = "465";
                     break;
-                    
+
                 case MailProvider.GMAIL:
                     host = "smtp.gmail.com";
                     port = "465";
-                    break;                    
-                    
+                    break;
+
                 case MailProvider.HOTMAIL:
                     host = "smtp.live.com";
                     port = "587";
@@ -71,28 +60,28 @@ namespace SecretSanta.Utils
                     host = "smtps.numericable.fr";
                     port = "587";
                     break;
-                    
+
                 case MailProvider.ORANGE:
                     host = "smtp.orange.fr";
                     port = "465";
                     break;
-                    
+
                 case MailProvider.OUTLOOK:
                     host = "SMTP.office365.com";
                     port = "587";
                     break;
-                    
+
                 case MailProvider.SFR:
                 case MailProvider.NEUF:
                     host = "smtp.sfr.fr";
                     port = "465";
                     break;
-                    
+
                 case MailProvider.YAHOO:
                     host = "smtp.mail.yahoo.com";
                     port = "465";
                     break;
-                    
+
                 case MailProvider.ZOHO:
                     host = "smtp.zoho.com";
                     port = "465";

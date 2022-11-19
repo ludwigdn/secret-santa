@@ -1,14 +1,6 @@
 ﻿using CommandLine;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Bson;
-using System;
-using System.IO;
 using System.Linq;
 using SecretSanta.Services;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SecretSanta
@@ -19,6 +11,9 @@ namespace SecretSanta
         {
             [Option('c', "config", HelpText = "Sets the config filepath.")]
             public string ConfigPath { get; set; }
+
+            [Option('d', "dry-run", HelpText = "At the end of the process, won´t sent the emails.")]
+            public bool DryRun { get; set; }
         }
 
         private static void Main(string[] args)
@@ -42,7 +37,7 @@ namespace SecretSanta
         {
             await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async opt =>
             {
-                Config.Instance.Parse(opt.ConfigPath?.Trim());
+                Config.Instance.Parse(opt.ConfigPath?.Trim(), opt.DryRun);
                 var localeService = new LocaleService(Config.Instance.Locale);
                 await AssignSantasAndSendEmails(localeService);
             });
@@ -64,6 +59,10 @@ namespace SecretSanta
         private static async Task AssignSantasAndSendEmails(LocaleService localeService)
         {
             var santas = new RandomizeService().Randomize(Config.Instance.Participants);
+            if (santas.Count == 0)
+            {
+              return;
+            }
 
             var mailservice = new MailService();
             var mailMessageFormatter = new MailMessageFormatter(localeService);

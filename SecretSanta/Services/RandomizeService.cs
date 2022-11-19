@@ -2,9 +2,7 @@
 using SecretSanta.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace SecretSanta.Services
 {
@@ -13,23 +11,44 @@ namespace SecretSanta.Services
         Random _rand;
 
         public RandomizeService()
-        { 
+        {
             _rand = new Random(DateTime.Now.Millisecond);
         }
-        
+
         public RandomizeService(Random rand)
-        { 
+        {
             _rand = rand;
         }
 
         public List<Participant> Randomize(List<Participant> participants)
         {
+            AssignPossibleReceivers(participants);
+            System.Diagnostics.Debug.WriteLine(participants);
+
             // Assign receivers to santas
-            do { AssignSantas(participants); }
-            while (participants.Any(o => !o.IsSet));
+            do
+            {
+              AssignSantas(participants);
+            }
+            while (participants.Any(o => !o.IsSet) || !EnsureEveryonePickedOnlyOnce(participants));
 
             // Return the results
             return participants;
+        }
+
+        public static bool EnsureEveryonePickedOnlyOnce(IEnumerable<Participant> participants) {
+          var distinctCount = participants.Select(o => o.ReceiversName).Distinct().Count();
+          var participantsCount =  participants.Count();
+          return distinctCount == participantsCount;
+        }
+
+        private void AssignPossibleReceivers(List<Participant> participants)
+        {
+          for (var i = 0; i < participants.Count; i++)
+          {
+            var santa = participants[i];
+            santa.SetPosibleReceivers(participants.Where(p => p.CanBeTakenBy(santa)));
+          }
         }
 
         private void AssignSantas(List<Participant> participants)
@@ -40,13 +59,15 @@ namespace SecretSanta.Services
             {
                 var santa = santas[0];
                 if (santa.IsSet)
+                {
                     continue;
+                }
 
-                // Shuffle at each iteration to avoid "groups of 3s" (A>B>C, D>F>G, ...)
+                // Shuffle at each iteration to avoid "groups of 3s" (A>B>C, D>E>F, ...)
                 Shuffle(participants);
 
-                // Take first free participant that differs from the current Santa
-                var receiver = participants.FirstOrDefault(o => o.CanBeTakenBy(santa));
+                // Take first available receiver
+                var receiver = santa.PossibleReceivers.FirstOrDefault(o => !o.IsTaken);
                 if (receiver != null)
                 {
                     // Free receiver found: assign them to the santa
@@ -54,16 +75,11 @@ namespace SecretSanta.Services
                     continue;
                 }
 
-                // If none found, take the first free receiver
-                receiver = participants.FirstOrDefault(o => !o.IsTaken);
-                
+                // If none found, take the first free receiver, and exchange them with someone that can take them
+                receiver = participants.First(o => !o.IsTaken);
                 santa.SetReceiver(receiver);
-
-                // Get first assigned santa, that differs from current and exchange their receivers
-                participants.Where(o => o.IsTaken)
-                    .Where(o => o.ReceiversName != santa.Name)
-                    .First(o => o.Name != receiver.Name)
-                    .ExchangeWith(santa);
+                var tradingPal = participants.First(o => receiver.CanBeTakenBy(o) && santa.HasAsPossibleReceiver(o.ReceiversName));
+                tradingPal.ExchangeWith(santa);
             }
         }
 

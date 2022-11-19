@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json.Linq;
 using SecretSanta.Models;
 using SecretSanta.Utils;
 
@@ -36,9 +34,9 @@ namespace SecretSanta.Services
 
             DisplaySeparator(_step++);
             config.Participants.AddRange(GetParticipants());
-            
+
             DisplaySeparator(_step++);
-            var mailProviderSettings = GetMailProviderSettings();            
+            var mailProviderSettings = GetMailProviderSettings();
             config.SmtpHost = mailProviderSettings.SMTP_HOST;
             config.SmtpPort = mailProviderSettings.SMTP_PORT;
 
@@ -54,43 +52,43 @@ namespace SecretSanta.Services
 
         private string GetLanguage()
         {
-            Console.WriteLine(); 
+            Console.WriteLine();
             WriteSlow("Langue du programme / Software language");
-            Console.WriteLine(); 
+            Console.WriteLine();
 
             Console.WriteLine($"   1. Français");
             Console.WriteLine($"   2. English");
 
-            Console.WriteLine(); 
+            Console.WriteLine();
             WriteSlow("Entrez le n° correspondant / Enter the corresponding number:");
             Console.Write(" > ");
 
             var lang = GetInteger(ReadLine(), max: 2, errorMessage: "Saisie invalide, veuillez réessayer. Invalid input, please try again.");
-            return lang == 1 
-                ? "fr" 
+            return lang == 1
+                ? "fr"
                 : "en";
         }
 
         private List<Participant> GetParticipants()
         {
-            Console.WriteLine(); 
-            WriteSlow(_localeService.Get(LocaleService.QUESTION_PARTICIPANTS)); 
-            Console.WriteLine(); 
+            Console.WriteLine();
+            WriteSlow(_localeService.Get(LocaleService.QUESTION_PARTICIPANTS));
+            Console.WriteLine();
             int participantsCount = GetInteger(GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_PARTICIPANTS_COUNT)));
 
             var list = new List<Participant>();
             for (int i = 1 ; i <= participantsCount ; i++)
-            {   
+            {
                 var participant = new Participant();
 
                 participant.Name = CheckDistinctString(
-                    GetAnswerFrom(string.Format(_localeService.Get(LocaleService.QUESTION_PARTICPANT_NAME), i)), 
-                    list.Select(o => o.Name), 
+                    GetAnswerFrom(string.Format(_localeService.Get(LocaleService.QUESTION_PARTICPANT_NAME), i)),
+                    list.Select(o => o.Name),
                     _localeService.Get(LocaleService.WARNING_NAME_EXISTS));
 
                 participant.Email = CheckDistinctString(
-                    GetAnswerFrom(string.Format(_localeService.Get(LocaleService.QUESTION_PARTICPANT_EMAIL), i)), 
-                    list.Select(o => o.Email), 
+                    GetAnswerFrom(string.Format(_localeService.Get(LocaleService.QUESTION_PARTICPANT_EMAIL), i)),
+                    list.Select(o => o.Email),
                     _localeService.Get(LocaleService.WARNING_EMAIL_EXISTS));
 
                 list.Add(participant);
@@ -108,15 +106,15 @@ namespace SecretSanta.Services
             var settings = MailProviderSettings.Get(AskMailProviderQuestion());
             if (settings == null)
                 settings = AskCustomMailProviderSettings();
-            
+
             return settings;
         }
 
         private MailProvider AskMailProviderQuestion()
         {
-            Console.WriteLine(); 
+            Console.WriteLine();
             WriteSlow(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER));
-            Console.WriteLine(); 
+            Console.WriteLine();
 
             System.Threading.Thread.Sleep(500);
 
@@ -125,23 +123,23 @@ namespace SecretSanta.Services
             foreach (var value in Enum.GetValues(typeof(MailProvider)))
             {
                 dic.Add(idx, (MailProvider)value);
-                
+
                 var displayedValue = (MailProvider)value == MailProvider.UNKOWN
                     ? _localeService.Get(LocaleService.QUESTION_USER_PROVIDER_UNKNOWN)
                     : $"{value}";
 
                 Console.WriteLine($"   {idx ++}. {displayedValue}");
             }
-            
+
             System.Threading.Thread.Sleep(500);
 
             var selectedProvider = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER_INDEX));
             return dic[GetInteger(selectedProvider, max: idx)];
         }
-        
+
         private MailProviderSettings AskCustomMailProviderSettings()
         {
-            Console.WriteLine(); 
+            Console.WriteLine();
             WriteSlow(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER_MANUAL));
 
             var host = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_PROVIDER_HOST));
@@ -152,11 +150,11 @@ namespace SecretSanta.Services
 
         private (string email, string password) GetUserCredentials()
         {
-            Console.WriteLine(); 
-            WriteSlow(_localeService.Get(LocaleService.QUESTION_USER_EMAIL_SETUP));            
-            var email = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_EMAIL)); 
+            Console.WriteLine();
+            WriteSlow(_localeService.Get(LocaleService.QUESTION_USER_EMAIL_SETUP));
+            var email = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_EMAIL));
             var password = GetAnswerFrom(_localeService.Get(LocaleService.QUESTION_USER_PASSWORD));
-            Console.WriteLine();  
+            Console.WriteLine();
             return (email, password);
         }
 
@@ -169,39 +167,39 @@ namespace SecretSanta.Services
             WriteSlow(_localeService.Get(LocaleService.AUTO_THANKS_2), false);
             ReadLine();
         }
-        
+
         #endregion Questions
 
         #region Utils
 
         private int GetInteger(string answer, int min = 1, int max = Int16.MaxValue, string errorMessage = null)
         {
-            int count;            
+            int count;
             while (!int.TryParse(answer, System.Globalization.NumberStyles.Integer, null, out count) || count < min || count > max)
             {
-                Console.WriteLine();  
-                WriteSlow(errorMessage ?? _localeService.Get(LocaleService.WARNING_INTEGER));  
-                Console.Write(" > ");         
+                Console.WriteLine();
+                WriteSlow(errorMessage ?? _localeService.Get(LocaleService.WARNING_INTEGER));
+                Console.Write(" > ");
                 answer = ReadLine();
             }
             return count;
         }
-        
+
         private string CheckDistinctString(string answer, IEnumerable<string> existing, string errorMessage)
         {
             while (existing.Any(o => o.ToLowerInvariant() == answer.ToLowerInvariant()))
             {
-                Console.WriteLine();  
-                WriteSlow(errorMessage);  
-                Console.Write(" > ");         
+                Console.WriteLine();
+                WriteSlow(errorMessage);
+                Console.Write(" > ");
                 answer = ReadLine();
             }
             return answer;
         }
-       
+
         private string GetAnswerFrom(string question)
         {
-            Console.WriteLine();  
+            Console.WriteLine();
             WriteSlow(question);
             Console.Write(" > ");
             return ReadLine();

@@ -16,14 +16,14 @@ namespace SecretSanta.Tests
         {
             var list = new List<Participant>
             {
-                new Participant { Name = "B.B. King", Email = "bbking@mail.com" },
-                new Participant { Name = "Eric Clapton", Email = "ericclapton@mail.com" },
-                new Participant { Name = "Jimmy Page", Email = "jimmypage@mail.com" },
-                new Participant { Name = "David Gilmour", Email = "davidgilmour@mail.com" },
-                new Participant { Name = "Slash", Email = "slash@mail.com" },
-                new Participant { Name = "Brian May", Email = "brianmay@mail.com" },
-                new Participant { Name = "Chuck Berry", Email = "chuckberry@mail.com" },
-                new Participant { Name = "Buckethead", Email = "buckethead@mail.com" }
+                new Participant { Name = "B.B. King", Email = "bbking@mail.com", Partner  = "Slash" },
+                new Participant { Name = "Eric Clapton", Email = "ericclapton@mail.com", Partner = "Jimmy Page" },
+                new Participant { Name = "Jimmy Page", Email = "jimmypage@mail.com" , Partner = "Eric Clapton" },
+                new Participant { Name = "David Gilmour", Email = "davidgilmour@mail.com" , Partner = "Brian May" },
+                new Participant { Name = "Slash", Email = "slash@mail.com" , Partner = "B.B. King" },
+                new Participant { Name = "Brian May", Email = "brianmay@mail.com" , Partner = "David Gilmour" },
+                new Participant { Name = "Chuck Berry", Email = "chuckberry@mail.com" , Partner = "Buckethead" },
+                new Participant { Name = "Buckethead", Email = "buckethead@mail.com" , Partner = "Chuck Berry" }
             };
 
             var randomizeService = new RandomizeService(rand);
@@ -50,28 +50,40 @@ namespace SecretSanta.Tests
         /// </summary>
         [Test, Parallelizable]
         public void IsActuallyRandomizedTest()
-        {            
-            bool AreDifferent(List<Participant> left, List<Participant> right)
+        {
+            bool AreDifferentAndNotPartners(List<Participant> left, List<Participant> right)
             {
                 for (int i = 0 ; i < left.Count ; i++)
+                {
                     if (left[i].Name == right[i].Name && left[i].ReceiversName == right[i].ReceiversName)
+                    {
                         return false;
+                    }
+                    if (left[i].Name == right[i].Partner || right[i].Name == left[i].Partner)
+                    {
+                        return false;
+                    }
 
+
+                }
                 return true;
             }
 
             List<bool> randomizedStates = new List<bool>();
+            List<bool> everyonePickedOnlyOnceStates = new List<bool>();
             var rand = new Random(DateTime.Now.Millisecond);
-            
+
             var prev = GetRandomizedList(rand);
             for (int i = 0; i < 10000; i++)
             {
                 var current = GetRandomizedList(rand);
-                randomizedStates.Add(AreDifferent(prev, current));
+                randomizedStates.Add(AreDifferentAndNotPartners(prev, current));
+                everyonePickedOnlyOnceStates.Add(RandomizeService.EnsureEveryonePickedOnlyOnce(current));
                 prev = current;
             }
-            
+
             Assert.IsFalse(randomizedStates.All(o => !o));
+            Assert.IsTrue(everyonePickedOnlyOnceStates.All(o => o));
         }
 
         /// <summary>

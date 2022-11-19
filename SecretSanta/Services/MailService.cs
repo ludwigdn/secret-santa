@@ -6,9 +6,6 @@ using SecretSanta.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Services
@@ -45,8 +42,14 @@ namespace SecretSanta.Services
 
                 try
                 {
-                    await emailClient.SendAsync(msg);
-                    Console.WriteLine($" > {santa.Email}: ok! ");
+                    if (!Config.Instance.DryRun)
+                    {
+                      await emailClient.SendAsync(msg);
+                      Console.WriteLine($" > {santa.Email}: ok! (Dryrun: {Config.Instance.DryRun})");
+                      return;
+                    }
+
+                    Console.WriteLine($" > Dryrun: {Config.Instance.DryRun} - {santa}");
                 }
                 catch (Exception ex)
                 {

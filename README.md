@@ -9,7 +9,7 @@
 
 ### Advanced Mode / Mode avancé
 
-**.NET Core 5 required.**
+**.NET Core 6 required.**
 
 Config file (json) :
 

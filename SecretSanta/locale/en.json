@@ -4,7 +4,7 @@
         "Participants" : "You will now enter the Santas (including yourself). Each Santa must have an email address and a dictinct name (even though some of these people share the same name, so they can properly be dintinguished).",
         "ParticipantsCount" : "Please now enter the number of secret santas (you included):",
         "ParticipantName": "Santa #{0} - Name:",
-        "ParticipantEmail": "Santa #{0} - Email:",  
+        "ParticipantEmail": "Santa #{0} - Email:",
         "UserProvider": "Please choose you email provider amongst the following list:",
         "UserProviderIndex": "Please choose the corresponding number:",
         "UserProviderUnown": "None of the above",
@@ -13,12 +13,12 @@
         "UserProviderManualSmtpPort": "Please enter the SMTP port:",
         "UserEmailAccountSetup": "You are now about to enter credentials for your email account that will be used to send an email to each of your santas. These credentials won't be sent to anyone or stored anywhere.",
         "UserEmail" : "Please enter the email address of the account:",
-        "UserPassword" : "Please enter the password of this email account:"    
+        "UserPassword" : "Please enter the password of this email account:"
     },
 
     "Auto" : {
-        "Body": "{0}, you were chosen to give a present to <span style=\"font-weight: bold; color: yellow;\">{1}</span>. Try to fit to what they like!<p>If you have no clue, just ask around :-)</p><div>Happy Holidays to all, and keep the secret until the last minute !</div>",
-        "BodyWithGifts": "{0}, you were chosen to give a present to <span style=\"font-weight: bold; color: yellow;\">{1}</span>. Here's a list of stuff that could please them: {2}<p></p><div>Happy Holidays to all, and keep the secret until the last minute !</div>",
+        "Body": "<strong>{0}</strong>, you were chosen to give a present to <strong>{1}</strong>. Try to fit to what they like! If you have no clue, just ask around :-)  Happy Holidays to all, and keep the secret until the last minute !",
+        "BodyWithGifts": "<strong>{0}</strong>, you were chosen to give a present to <strong>{1}</strong>. Here's a list of stuff that could please them:  {2}  Happy Holidays to all, and keep the secret until the last minute !",
         "BodyTitle" : "Secret Santas have been chosen!",
         "Thanks" : "Thanks for using this app. Season's greetings !",
         "Thanks2" : "Press enter to stop..."
