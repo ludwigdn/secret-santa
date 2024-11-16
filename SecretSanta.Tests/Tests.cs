@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using SecretSanta;
 using SecretSanta.Services;
 using SecretSanta.Models;
 using SecretSanta.Utils;
