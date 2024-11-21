@@ -26,12 +26,6 @@ namespace SecretSanta.Services
             var config = new Config();
             config.Locale = Locale;
 
-            config.MailBodyTitle = _localeService.Get(LocaleService.AUTO_BODY_TITLE);
-            config.MailBody = _localeService.Get(LocaleService.AUTO_BODY);
-
-            DisplaySeparator(_step++);
-            config.MailSubject = GetMailSubject();
-
             DisplaySeparator(_step++);
             config.Participants.AddRange(GetParticipants());
 

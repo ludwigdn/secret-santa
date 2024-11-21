@@ -2,7 +2,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 
 namespace SecretSanta.Services
-{    
+{
     public class LocaleService
     {
         public static string QUESTION_MAIL = "Q.MailSubject";
@@ -13,12 +13,13 @@ namespace SecretSanta.Services
         public static string QUESTION_USER_PROVIDER = "Q.UserProvider";
         public static string QUESTION_USER_PROVIDER_INDEX = "Q.UserProviderIndex";
         public static string QUESTION_USER_PROVIDER_UNKNOWN = "Q.UserProviderUnown";
-        public static string QUESTION_USER_PROVIDER_MANUAL = "Q.UserProviderManual";   
-        public static string QUESTION_USER_PROVIDER_HOST = "Q.UserProviderManualSmtpHost";   
-        public static string QUESTION_USER_PROVIDER_PORT = "Q.UserProviderManualSmtpPort";            
-        public static string QUESTION_USER_EMAIL_SETUP = "Q.UserEmailAccountSetup";       
+        public static string QUESTION_USER_PROVIDER_MANUAL = "Q.UserProviderManual";
+        public static string QUESTION_USER_PROVIDER_HOST = "Q.UserProviderManualSmtpHost";
+        public static string QUESTION_USER_PROVIDER_PORT = "Q.UserProviderManualSmtpPort";
+        public static string QUESTION_USER_EMAIL_SETUP = "Q.UserEmailAccountSetup";
         public static string QUESTION_USER_EMAIL = "Q.UserEmail";
         public static string QUESTION_USER_PASSWORD = "Q.UserPassword";
+        public static string AUTO_SUBJECT = "Auto.Subject";
         public static string AUTO_BODY = "Auto.Body";
         public static string AUTO_BODY_WITH_GIFTS = "Auto.BodyWithGifts";
         public static string AUTO_THANKS = "Auto.Thanks";
@@ -29,7 +30,7 @@ namespace SecretSanta.Services
         public static string WARNING_EMAIL_EXISTS = "Warning.EmailExists";
 
         private JObject _jsonObject;
-        
+
         public string Locale { get; private set; }
 
         public LocaleService(string locale)

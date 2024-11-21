@@ -15,15 +15,6 @@ namespace SecretSanta
         public string Locale { get; set; }
 
         [DataMember]
-        public string MailSubject { get; set; }
-
-        [DataMember]
-        public string MailBodyTitle { get; set; }
-
-        [DataMember]
-        public string MailBody { get; set; }
-
-        [DataMember]
         public string SmtpEmail { get; set; }
 
         [DataMember]
@@ -45,9 +36,6 @@ namespace SecretSanta
             var fileContent = File.ReadAllText(filePath);
             var config = JsonConvert.DeserializeObject<Config>(fileContent);
             Locale = config.Locale;
-            MailSubject = config.MailSubject;
-            MailBodyTitle = config.MailBodyTitle;
-            MailBody = config.MailBody;
             SmtpEmail = config.SmtpEmail;
             SmtpPassword = config.SmtpPassword;
             SmtpHost = config.SmtpHost;
@@ -58,9 +46,6 @@ namespace SecretSanta
         public void Parse(Config config)
         {
             Locale = config.Locale;
-            MailSubject = config.MailSubject;
-            MailBodyTitle = config.MailBodyTitle;
-            MailBody = config.MailBody;
             SmtpEmail = config.SmtpEmail;
             SmtpPassword = config.SmtpPassword;
             SmtpHost = config.SmtpHost;

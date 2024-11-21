@@ -38,8 +38,7 @@ namespace SecretSanta
             await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async opt =>
             {
                 Config.Instance.Parse(opt.ConfigPath?.Trim(), opt.DryRun);
-                var localeService = new LocaleService(Config.Instance.Locale);
-                await AssignSantasAndSendEmails(localeService);
+                await AssignSantasAndSendEmails();
             });
         }
 
@@ -47,31 +46,30 @@ namespace SecretSanta
         {
             var configurator = new ManualConfigService();
             var localeService = new LocaleService(configurator.Locale);
+            Config.Instance.Parse(configurator.GetConfig(localeService));
 
-            var config = configurator.GetConfig(localeService);
-            Config.Instance.Parse(config);
-
-            await AssignSantasAndSendEmails(localeService);
-
+            await AssignSantasAndSendEmails();
             configurator.DisplayEndProcess();
         }
 
-        private static async Task AssignSantasAndSendEmails(LocaleService localeService)
+        private static async Task AssignSantasAndSendEmails()
         {
             var santas = new RandomizeService().Randomize(Config.Instance.Participants);
             if (santas.Count == 0)
             {
-              return;
+                return;
             }
 
             var mailservice = new MailService();
-            var mailMessageFormatter = new MailMessageFormatter(localeService);
 
             // Todo: try to put back Task.WhenAll on Send() without having 'too much connections' issue
             foreach (var santa in santas)
             {
-                var body = mailMessageFormatter.GetHtmlBody(santa);
-                await mailservice.Send(santa, body);
+                var localeService = new LocaleService(santa.Locale ?? Config.Instance.Locale);
+                var mailMessageFormatter = new MailMessageFormatter(localeService);
+                var mailBody = mailMessageFormatter.GetHtmlBody(santa);
+                var mailSubject = localeService.Get(LocaleService.AUTO_SUBJECT);
+                await mailservice.Send(santa, mailBody, mailSubject);
             }
         }
     }

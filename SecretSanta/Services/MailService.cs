@@ -25,7 +25,7 @@ namespace SecretSanta.Services
             PORT = int.Parse(Config.Instance.SmtpPort);
         }
 
-        public async Task Send(Participant santa, string body)
+        public async Task Send(Participant santa, string body, string subject)
         {
             using (var emailClient = new SmtpClient())
             {
@@ -37,7 +37,7 @@ namespace SecretSanta.Services
                 var msg = new MimeMessage();
                 msg.To.AddRange(new List<MailboxAddress> { MailboxAddress.Parse(santa.Email) });
                 msg.From.AddRange(new List<MailboxAddress> { MailboxAddress.Parse(Config.Instance.SmtpEmail) });
-                msg.Subject = Config.Instance.MailSubject;
+                msg.Subject = subject;
                 msg.Body = new TextPart(TextFormat.Html) { Text = body };
 
                 try

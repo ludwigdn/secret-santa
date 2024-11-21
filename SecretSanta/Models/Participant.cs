@@ -14,6 +14,9 @@ namespace SecretSanta.Models
 
         // Public
         [DataMember]
+        public string Locale { get; set; }
+
+        [DataMember]
         public string Email { get; set; }
 
         [DataMember]
