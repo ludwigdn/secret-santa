@@ -2,22 +2,22 @@ name: .NET Core
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core...
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.110
-    - name: Install dependencies...
-      run: dotnet restore
-    - name: Start Build...
-      run: dotnet build --configuration Release --no-restore
-    - name: Start Unit-Testing...
-      run: dotnet test --no-restore --no-build --configuration Release --verbosity normal
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core...
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.203
+      - name: Install dependencies...
+        run: dotnet restore
+      - name: Start Build...
+        run: dotnet build --configuration Release --no-restore
+      - name: Start Unit-Testing...
+        run: dotnet test --no-restore --no-build --configuration Release --verbosity normal
