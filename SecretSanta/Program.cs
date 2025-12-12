@@ -18,38 +18,16 @@ namespace SecretSanta
 
         private static void Main(string[] args)
         {
-            MainAsync(args).GetAwaiter().GetResult();
+            Init(args).GetAwaiter().GetResult();
         }
 
-        private static async Task MainAsync(string[] args)
-        {
-            if (!args?.Any() ?? true)
-            {
-                await SetManualConfig();
-            }
-            else
-            {
-                await SetAutoConfig(args);
-            }
-        }
-
-        private static async Task SetAutoConfig(string[] args)
+        private static async Task Init(string[] args)
         {
             await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async opt =>
             {
                 Config.Instance.Parse(opt.ConfigPath?.Trim(), opt.DryRun);
                 await AssignSantasAndSendEmails();
             });
-        }
-
-        private static async Task SetManualConfig()
-        {
-            var configurator = new ManualConfigService();
-            var localeService = new LocaleService(configurator.Locale);
-            Config.Instance.Parse(configurator.GetConfig(localeService));
-
-            await AssignSantasAndSendEmails();
-            configurator.DisplayEndProcess();
         }
 
         private static async Task AssignSantasAndSendEmails()

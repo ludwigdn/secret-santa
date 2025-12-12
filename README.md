@@ -2,20 +2,14 @@
 
 # Secret Santa
 
-### Easy Mode / Mode facile
-
-- [Français](https://github.com/ludwigdn/secret-santa/blob/main/README/fr.md)
-- [English](https://github.com/ludwigdn/secret-santa/blob/main/README/en.md)
-
-### Advanced Mode / Mode avancé
-
 **.NET Core 6 required.**
 
 Config file (json) :
 
 - Update the "locale" with either 'en' or 'fr'.
-- The field 'MailSubject' can be left as they are, but you can put whatever you want.
-- The field "GiftIdeas" (into "Participants") is not mandatory. You can add it if the person has provided a list of gift ideas.
+- The field `MailSubject` can be left as they are, but you can put whatever you want.
+- The field `GiftIdeas` (into "Participants") is not mandatory. You can add it if the person has provided a list of gift ideas.
+- The optional field `Partner` can be sent to prevent two people offering gifts to each other (ie, two people in a relationship)
 - Other fields must bu updated according to your configuration.
 
 ```
@@ -30,19 +24,26 @@ Config file (json) :
     {
       "Name": "Alice",
       "Email": "alice@mailbox.com",
+      "Partner": "Bob",
       "GiftIdeas" : [
         "The album Appetite for Destruction from Guns n' Roses",
         "A new pillow"
-      ]
+      ],
+      "locale": "fr",
     },
     {
       "Name": "Bob",
+      "Partner": "Alice",
       "Email": "bob@mailbox.com",
       "GiftIdeas" : []
     },
     {
       "Name": "Foobar",
       "Email": "foobar@mailbox.com"
+    },
+    {
+      "Name": "Barfoo",
+      "Email": "barfoo@mailbox.com"
     }
   ]
 }

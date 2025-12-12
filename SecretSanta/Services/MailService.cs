@@ -42,18 +42,11 @@ namespace SecretSanta.Services
 
                 try
                 {
-                    if (!Config.Instance.DryRun)
-                    {
-                      await emailClient.SendAsync(msg);
-                      Console.WriteLine($" > {santa.Email}: ok! (Dryrun: {Config.Instance.DryRun})");
-                      return;
-                    }
-
-                    Console.WriteLine($" > Dryrun: {Config.Instance.DryRun} - {santa}");
+                  Console.WriteLine($" > {santa.Email}: ok! (Dryrun: {Config.Instance.DryRun})");
+                  if (!Config.Instance.DryRun) await emailClient.SendAsync(msg);
                 }
                 catch (Exception ex)
                 {
-                    // todo put this in a log file
                     Debug.WriteLine($"{santa.Email} - Error when sending mail");
                     Debug.WriteLine($"{santa.Email} - Exception: " + ex.InnerException?.Message ?? ex.Message);
                 }
